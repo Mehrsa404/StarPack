@@ -14,7 +14,18 @@
     <artifactId>wrapper-facade</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
+    <dependencies>
+        <dependency>
+            <groupId>ir.mohaymen</groupId>
+            <artifactId>wrapper-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ir.mohaymen</groupId>
+            <artifactId>wrapper-bdmp</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

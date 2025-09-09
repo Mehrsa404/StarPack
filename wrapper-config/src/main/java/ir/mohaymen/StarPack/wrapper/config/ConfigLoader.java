@@ -26,40 +26,43 @@ public class ConfigLoader {
         return props.getProperty(key);
     }
 
-    public static String getBoolean(String key) {
-        return Boolean.valueOf(props.getProperty(key)).toString();
+    public static String getString(String key, String defaultValue) {
+        String val = props.getProperty(key);
+        return (val != null && !val.isBlank()) ? val : defaultValue;
+    }
+
+    public static boolean getBoolean(String key) {
+        String val = props.getProperty(key);
+        return val != null && Boolean.parseBoolean(val.trim());
+    }
+
+    public static boolean getBoolean(String key, boolean defaultValue) {
+        String val = props.getProperty(key);
+        return (val != null && !val.isBlank()) ? Boolean.parseBoolean(val.trim()) : defaultValue;
     }
 
     public static int getInt(String key) {
-        return Integer.parseInt(props.getProperty(key));
+        String val = props.getProperty(key);
+        if (val == null || val.isBlank()) {
+            throw new IllegalArgumentException("Missing required integer property: " + key);
+        }
+        return Integer.parseInt(val.trim());
     }
 
     public static int getInt(String key, int defaultValue) {
         String val = props.getProperty(key);
-        return (val != null) ? Integer.parseInt(val) : defaultValue;
+        return (val != null && !val.isBlank()) ? Integer.parseInt(val.trim()) : defaultValue;
     }
 
     public static List<Integer> getIntList(String key) {
         String raw = props.getProperty(key);
-        if (raw == null) {
-            return List.of();
-        }
         if (raw == null || raw.isBlank()) {
             return List.of();
         }
-        return Arrays.stream(raw.split(",")).map(String::trim).map(Integer::parseInt).toList();
+        return Arrays.stream(raw.split(","))
+                     .map(String::trim)
+                     .map(Integer::parseInt)
+                     .toList();
     }
 
-    public static <T> T readJsonFromResources(String path, Class<T> clazz) {
-        String commonPath = "filterPatterns/regularPatterns/";
-        ObjectMapper mapper = new ObjectMapper();
-        try (InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(commonPath + path + ".json")) {
-            if (is == null) {
-                throw new IllegalArgumentException("Resource not found: " + path);
-            }
-            return mapper.readValue(is, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to read resource: " + path, e);
-        }
-    }
 }

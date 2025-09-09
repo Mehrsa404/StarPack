@@ -1,8 +1,8 @@
 package ir.mohaymen.StarPack.wrapper.am.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.mohaymen.StarPack.wrapper.config.*;
-import ir.mohaymen.StarPack.wrapper.core.domain.AM.CookiesDTO;
-import ir.mohaymen.StarPack.wrapper.core.domain.AM.LoginRequest;
+import ir.mohaymen.StarPack.wrapper.core.AM.CookiesDTO;
+import ir.mohaymen.StarPack.wrapper.core.AM.LoginRequest;
 
 
 import java.io.IOException;
@@ -24,14 +24,14 @@ public class AMClient {
     private final String baseUrl;
 
     public AMClient() {
-        this.baseUrl = ConfigLoader.getString("am.service.url").trim() ;
+        this.baseUrl = ConfigLoader.getString("am.service.url", "https://web-star-nta.abriment.mohaymen.ir").trim() ;
         this.httpClient = HttpClient.newBuilder()
                                     .connectTimeout(Duration.ofSeconds(10))
                                     .followRedirects(HttpClient.Redirect.NEVER)
                                     .build();
     }
 
-    public CookiesDTO getTokens(List<LoginRequest> body) throws Exception {
+    private CookiesDTO extractTokens(List<LoginRequest> body) throws Exception {
 
         HttpResponse<String> response = LoginAndGetResponse(body);
 
@@ -60,9 +60,9 @@ public class AMClient {
 
     private HttpResponse<String> LoginAndGetResponse(List<LoginRequest> body) throws URISyntaxException, IOException, InterruptedException {
         String query = String.format("Mrpc-EngineName=%s&Mrpc-EngineVersion=%s&W_MultiTech=%s&W_InputAsArray=%s&W_HandlingMode=%d",
-                                     URLEncoder.encode(ConfigLoader.getString("am.service.enginName"), StandardCharsets.UTF_8),
-                                     URLEncoder.encode(ConfigLoader.getString("am.service.enginVersion"), StandardCharsets.UTF_8),
-                                     ConfigLoader.getBoolean("am.service.multiTech"), ConfigLoader.getBoolean("am.service.inputAsArray"), ConfigLoader.getInt("am.service.handlingMode"));
+                                     URLEncoder.encode(ConfigLoader.getString("am.service.enginName", "AM"), StandardCharsets.UTF_8),
+                                     URLEncoder.encode(ConfigLoader.getString("am.service.enginVersion", "403.1.1493.0"), StandardCharsets.UTF_8),
+                                     ConfigLoader.getBoolean("am.service.multiTech", false), ConfigLoader.getBoolean("am.service.inputAsArray", true), ConfigLoader.getInt("am.service.handlingMode", 1));
 
         URI uri = new URI(baseUrl + "/gateway/MSSE.AM/api/IdentityManagementApi/Login?" + query);
 
@@ -85,14 +85,14 @@ public class AMClient {
     }
 
     public CookiesDTO getCookies() throws Exception {
-        LoginRequest req = new LoginRequest(ConfigLoader.getString("am.service.user"), ConfigLoader.getString("am.service.password"));
-        return getTokens(List.of(req));
+        LoginRequest req = new LoginRequest(ConfigLoader.getString("am.service.user", "admin"), ConfigLoader.getString("am.service.password", "123"));
+        return extractTokens(List.of(req));
     }
 
-    public static void main(String[] args) throws Exception {
-        AMClient client = new AMClient();
-        CookiesDTO cookiesDTO = client.getCookies();
-        System.out.println(cookiesDTO.getSessionToken());
-        System.out.println(cookiesDTO.getXAuthToken());
-    }
+//    public static void main(String[] args) throws Exception {
+//        AMClient client = new AMClient();
+//        CookiesDTO cookiesDTO = client.getCookies();
+//        System.out.println(cookiesDTO.getSessionToken());
+//        System.out.println(cookiesDTO.getXAuthToken());
+//    }
 }

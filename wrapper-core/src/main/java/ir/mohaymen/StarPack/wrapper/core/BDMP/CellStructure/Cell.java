@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.core.domain.BDMP.CellStructure;
+package ir.mohaymen.StarPack.wrapper.core.BDMP.CellStructure;
 
 public class Cell {
     private int ColumnId;

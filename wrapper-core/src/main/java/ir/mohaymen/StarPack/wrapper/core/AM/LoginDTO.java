@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.core.domain.AM;
+package ir.mohaymen.StarPack.wrapper.core.AM;
 
 import java.util.List;
 

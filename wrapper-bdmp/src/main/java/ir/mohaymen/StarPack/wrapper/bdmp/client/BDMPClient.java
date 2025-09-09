@@ -3,9 +3,10 @@ package ir.mohaymen.StarPack.wrapper.bdmp.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.mohaymen.StarPack.wrapper.am.client.AMClient;
-import ir.mohaymen.StarPack.wrapper.core.domain.BDMP.GetSimorghRowsInputDTO;
+import ir.mohaymen.StarPack.wrapper.core.BDMP.getSimorghRows.GetSimorghRowsInputDTO;
 import ir.mohaymen.StarPack.wrapper.config.ConfigLoader;
-import ir.mohaymen.StarPack.wrapper.core.domain.BDMP.GetSimorghRowsOutputDTO;
+import ir.mohaymen.StarPack.wrapper.core.BDMP.getSimorghRows.GetSimorghRowsOutputDTO;
+import ir.mohaymen.StarPack.wrapper.core.BDMP.getWarehouses.GetWarhousesType;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -19,14 +20,33 @@ import java.util.Map;
 
 public class BDMPClient {
     private final static AMClient AM_CLIENT = new AMClient();
+    private final static String X_AuthToken;
+
+    static {
+        try {
+            X_AuthToken = AM_CLIENT.getCookies().getXAuthToken();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private final static String sessionCookie;
+
+    static {
+        try {
+            sessionCookie = AM_CLIENT.getCookies().getSessionToken();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private final String baseUrl;
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private final HttpClient httpClient;
-    private final GetSimorghRowsInputDTO getSimorghRowsInputDTO = new GetSimorghRowsInputDTO(ConfigLoader.getInt("bdmp.service.warehouseId"), ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage", 0), ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage", 100));
 
 
     public BDMPClient() {
-        this.baseUrl = ConfigLoader.getString("bdmp.service.url");
+        this.baseUrl = ConfigLoader.getString("bdmp.service.url", "https://web-star-nta.abriment.mohaymen.ir");
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
                 .followRedirects(HttpClient.Redirect.NEVER)
@@ -38,13 +58,13 @@ public class BDMPClient {
         GetSimorghRowsInputDTO dto = new GetSimorghRowsInputDTO(
                 warehouseId,
                 ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage",0),
-                ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage"
+                ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage",20
         ));
         String query = String.join("&",
-                                   qp("Mrpc-EngineName",  ConfigLoader.getString("bdmp.service.engineName")),
-                                   qp("Mrpc-EngineVersion", ConfigLoader.getString("bdmp.service.engineVersion")),
-                                   qp("W_MultiTech",   ConfigLoader.getBoolean("bdmp.service.multiTech")),
-                                   qp("W_InputAsArray",ConfigLoader.getBoolean("bdmp.service.inputAsArray")),
+                                   qp("Mrpc-EngineName",  ConfigLoader.getString("bdmp.service.engineName", "LADW")),
+                                   qp("Mrpc-EngineVersion", ConfigLoader.getString("bdmp.service.engineVersion", "403.1.1508.0")),
+                                   qp("W_MultiTech",   ConfigLoader.getBoolean("bdmp.service.multiTech", false)),
+                                   qp("W_InputAsArray",ConfigLoader.getBoolean("bdmp.service.inputAsArray", true)),
                                    qp("W_HandlingMode",ConfigLoader.getInt("bdmp.service.handlingMode", 1))
                                   );
 
@@ -72,12 +92,11 @@ public class BDMPClient {
         root.add(null);
         String body = MAPPER.writeValueAsString(root);
 
-        String xAuthToken = AM_CLIENT.getCookies().getXAuthToken();
         HttpRequest request = HttpRequest.newBuilder(uri)
                                          .timeout(Duration.ofSeconds(15))
                                          .header("Accept", "application/json, text/plain, */*")
                                          .header("Content-Type", "application/json")
-                                         .header("Cookie", "X-Auth-Token=" + xAuthToken) // طبق داک
+                                         .header("Cookie", "X-Auth-Token=" + X_AuthToken)
                                          .POST(HttpRequest.BodyPublishers.ofString(body))
                                          .build();
 
@@ -91,9 +110,32 @@ public class BDMPClient {
     }
 
 
-    public void getSimorghWarehouses() throws Exception {
+    private JsonNode getSimorghWarehouses() throws Exception {
+        String query = String.join("&",
+                                   qp("Mrpc-EngineName",  ConfigLoader.getString("bdmp.service.engineName", "LADW")),
+                                   qp("Mrpc-EngineVersion", ConfigLoader.getString("bdmp.service.engineVersion", "403.1.1508.0")),
+                                   qp("W_MultiTech",   ConfigLoader.getBoolean("bdmp.service.multiTech", false)),
+                                   qp("W_InputAsArray",ConfigLoader.getBoolean("bdmp.service.inputAsArray", true)),
+                                   qp("W_HandlingMode",ConfigLoader.getInt("bdmp.service.handlingMode", 1))
+                                  );
 
+        URI uri = new URI(baseUrl + "/gateway/MSSE.LADW/api/WarehouseEditManagementApi/GetWarehouses?" + query);
+
+        String cookieHeader =
+                "cookiesession1=" + sessionCookie +
+                ";X-Auth-Token=" + X_AuthToken;
+        HttpRequest request = HttpRequest.newBuilder(uri)
+                .timeout(Duration.ofSeconds(15))
+                .header("Accept", "application/json, text/plain, */*")
+                .header("Content-Type", "application/json")
+                .header("Cookie", cookieHeader)
+                .POST(HttpRequest.BodyPublishers.ofString("[]"))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return MAPPER.readTree(response.body());
     }
+
 
     private static String qp(String key, Object value) {
         return URLEncoder.encode(key, StandardCharsets.UTF_8)
@@ -101,42 +143,51 @@ public class BDMPClient {
                + URLEncoder.encode(String.valueOf(value), StandardCharsets.UTF_8);
     }
 
-    public GetSimorghRowsOutputDTO getRecordSourceRows(int warehouseId, String jsonFilter) throws Exception {
+    public GetSimorghRowsOutputDTO getStructuredRecordSourceRows(int warehouseId, String jsonFilter) throws Exception {
         var response = MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter).toString(), GetSimorghRowsOutputDTO.class);
         return response;
     }
 
-    public static void main(String[] args) throws Exception {
-        BDMPClient bdmpClient = new BDMPClient();
-
-//                String jsonFilter = """
-//                {
-//                  "LeafClause": {
-//                    "ColumnId": 155,
-//                    "QueryType": 13,
-//                    "Value": {
-//                      "ClauseValueType": 0,
-//                      "Value": "2/202"
-//                    }
-//                  },
-//                  "Not": false
-//                }""";
-
-//        String jsonFilter = """
-//                {
-//                  "LeafClause": {
-//                    "ColumnId": 153,
-//                    "QueryType": 8,
-//                    "Value": {
-//                      "ClauseValueType": 0,
-//                      "Value": "1"
-//                    }
-//                  },
-//                  "Not": false
-//                }""";
-        String jsonFilter = "";
-        System.out.println(bdmpClient.getRecordSourceRows(24,jsonFilter).toString());
+    public GetWarhousesType getWarehousesStructured() throws Exception {
+        GetWarhousesType output = MAPPER.readValue(getSimorghWarehouses().toString(), GetWarhousesType.class);
+        return output;
     }
+
+//    public static void main(String[] args) throws Exception {
+//        BDMPClient bdmpClient = new BDMPClient();
+//
+////                String jsonFilter = """
+////                {
+////                  "LeafClause": {
+////                    "ColumnId": 155,
+////                    "QueryType": 13,
+////                    "Value": {
+////                      "ClauseValueType": 0,
+////                      "Value": "2/202"
+////                    }
+////                  },
+////                  "Not": false
+////                }""";
+//
+////        String jsonFilter = """
+////                {
+////                  "LeafClause": {
+////                    "ColumnId": 153,
+////                    "QueryType": 8,
+////                    "Value": {
+////                      "ClauseValueType": 0,
+////                      "Value": "1"
+////                    }
+////                  },
+////                  "Not": false
+////                }""";
+//        String jsonFilter = "";
+//        System.out.println(bdmpClient.getStructuredRecordSourceRows(24, jsonFilter).toString());
+//
+////        ________________________________________
+//        bdmpClient.getSimorghWarehouses();
+//        bdmpClient.getSimorghWarehouses();
+//    }
 }
 
 

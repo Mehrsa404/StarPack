@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.core.domain.BDMP;
+package ir.mohaymen.StarPack.wrapper.core.BDMP.getSimorghRows;
 
 import java.util.*;
 

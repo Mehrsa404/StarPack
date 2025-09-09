@@ -1,9 +1,7 @@
-package ir.mohaymen.StarPack.wrapper.core.domain.BDMP.CellStructure;
+package ir.mohaymen.StarPack.wrapper.core.BDMP.CellStructure;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Cells {
     private SID sid;
