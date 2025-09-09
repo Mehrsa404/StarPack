@@ -31,7 +31,7 @@ public class AMClient {
                                     .build();
     }
 
-    public List<String> getTokens(List<LoginRequest> body) throws Exception {
+    public CookiesDTO getTokens(List<LoginRequest> body) throws Exception {
 
         HttpResponse<String> response = LoginAndGetResponse(body);
 
@@ -52,10 +52,10 @@ public class AMClient {
                                         .map(HttpCookie::getValue)
                                         .findFirst()
                                         .orElse(null);
-//        System.out.println("cookiesession1=" + cookiesession1);
         assert xAuthCookie != null;
         assert cookiesession1 != null;
-        return (List.of(cookiesession1, xAuthCookie));
+        CookiesDTO cookiesDTO = new CookiesDTO(xAuthCookie ,  cookiesession1);
+        return cookiesDTO;
     }
 
     private HttpResponse<String> LoginAndGetResponse(List<LoginRequest> body) throws URISyntaxException, IOException, InterruptedException {
@@ -86,17 +86,13 @@ public class AMClient {
 
     public CookiesDTO getCookies() throws Exception {
         LoginRequest req = new LoginRequest(ConfigLoader.getString("am.service.user"), ConfigLoader.getString("am.service.password"));
-        List<String> cookies = getTokens(List.of(req));
-        CookiesDTO cookiesDTO = new CookiesDTO(cookies.get(0), cookies.get(1));
-        System.out.println("sessionToken=" + cookiesDTO.getSessionToken());
-        System.out.println("xAuthToken=" + cookiesDTO.getXAuthToken());
-        return cookiesDTO;
+        return getTokens(List.of(req));
     }
 
-//    public static void main(String[] args) throws Exception {
-//        AMClient client = new AMClient();
-//        CookiesDTO cookiesDTO = client.getCookies();
-//        System.out.println(cookiesDTO.getSessionToken());
-//        System.out.println(cookiesDTO.getXAuthToken());
-//    }
+    public static void main(String[] args) throws Exception {
+        AMClient client = new AMClient();
+        CookiesDTO cookiesDTO = client.getCookies();
+        System.out.println(cookiesDTO.getSessionToken());
+        System.out.println(cookiesDTO.getXAuthToken());
+    }
 }

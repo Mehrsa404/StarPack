@@ -1,5 +1,7 @@
 package ir.mohaymen.StarPack.wrapper.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -46,5 +48,18 @@ public class ConfigLoader {
             return List.of();
         }
         return Arrays.stream(raw.split(",")).map(String::trim).map(Integer::parseInt).toList();
+    }
+
+    public static <T> T readJsonFromResources(String path, Class<T> clazz) {
+        String commonPath = "filterPatterns/regularPatterns/";
+        ObjectMapper mapper = new ObjectMapper();
+        try (InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(commonPath + path + ".json")) {
+            if (is == null) {
+                throw new IllegalArgumentException("Resource not found: " + path);
+            }
+            return mapper.readValue(is, clazz);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read resource: " + path, e);
+        }
     }
 }

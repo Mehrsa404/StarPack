@@ -33,7 +33,7 @@ public class BDMPClient {
                 .build();
     }
 
-    private JsonNode getSimorghRows(int warehouseId) throws Exception {
+    private JsonNode getSimorghRows(int warehouseId, String jsonFilter) throws Exception {
 
         GetSimorghRowsInputDTO dto = new GetSimorghRowsInputDTO(
                 warehouseId,
@@ -50,6 +50,8 @@ public class BDMPClient {
 
         URI uri = new URI(baseUrl + "/gateway/MSSE.LADW/api/SimorghExplorerApi/GetSimorghRows?" + query);
 
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode filterNode = mapper.readTree(jsonFilter);
 
         Map<String, Object> requestDto = Map.of(
                 "WarehouseId", dto.getWarehouseId()
@@ -62,7 +64,7 @@ public class BDMPClient {
 
         var clause = new java.util.LinkedHashMap<String, Object>();
         clause.put("SimorghExplorerRequestDtos", List.of(requestDto));
-        clause.put("Filter", null);
+        clause.put("Filter", filterNode);
         clause.put("PagingInfo", paging);
 
         var root = new java.util.ArrayList<>();
@@ -89,6 +91,9 @@ public class BDMPClient {
     }
 
 
+    public void getSimorghWarehouses() throws Exception {
+
+    }
 
     private static String qp(String key, Object value) {
         return URLEncoder.encode(key, StandardCharsets.UTF_8)
@@ -96,15 +101,41 @@ public class BDMPClient {
                + URLEncoder.encode(String.valueOf(value), StandardCharsets.UTF_8);
     }
 
-    public GetSimorghRowsOutputDTO getRecordSourceRows(int warehouseId) throws Exception {
-        var response = MAPPER.readValue(getSimorghRows(warehouseId).toString(), GetSimorghRowsOutputDTO.class);
+    public GetSimorghRowsOutputDTO getRecordSourceRows(int warehouseId, String jsonFilter) throws Exception {
+        var response = MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter).toString(), GetSimorghRowsOutputDTO.class);
         return response;
     }
 
     public static void main(String[] args) throws Exception {
         BDMPClient bdmpClient = new BDMPClient();
 
-        System.out.println(bdmpClient.getRecordSourceRows(23).toString());
+//                String jsonFilter = """
+//                {
+//                  "LeafClause": {
+//                    "ColumnId": 155,
+//                    "QueryType": 13,
+//                    "Value": {
+//                      "ClauseValueType": 0,
+//                      "Value": "2/202"
+//                    }
+//                  },
+//                  "Not": false
+//                }""";
+
+//        String jsonFilter = """
+//                {
+//                  "LeafClause": {
+//                    "ColumnId": 153,
+//                    "QueryType": 8,
+//                    "Value": {
+//                      "ClauseValueType": 0,
+//                      "Value": "1"
+//                    }
+//                  },
+//                  "Not": false
+//                }""";
+        String jsonFilter = "";
+        System.out.println(bdmpClient.getRecordSourceRows(24,jsonFilter).toString());
     }
 }
 
