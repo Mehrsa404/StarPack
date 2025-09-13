@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.core.AM;
+package ir.mohaymen.starpack.wrapper.core.am;
 
 public class LoginRequest {
     private String username;

@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.core.AM;
+package ir.mohaymen.starpack.wrapper.core.am;
 
 import java.util.List;
 

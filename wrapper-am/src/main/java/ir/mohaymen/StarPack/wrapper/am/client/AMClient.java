@@ -1,8 +1,9 @@
-package ir.mohaymen.StarPack.wrapper.am.client;
+package ir.mohaymen.starpack.wrapper.am.client;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ir.mohaymen.StarPack.wrapper.config.*;
-import ir.mohaymen.StarPack.wrapper.core.AM.CookiesDTO;
-import ir.mohaymen.StarPack.wrapper.core.AM.LoginRequest;
+import ir.mohaymen.starpack.wrapper.config.*;
+import ir.mohaymen.starpack.wrapper.core.am.CookiesDTO;
+import ir.mohaymen.starpack.wrapper.core.am.LoginRequest;
 
 
 import java.io.IOException;

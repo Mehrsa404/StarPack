@@ -1,9 +1,7 @@
-package ir.mohaymen.StarPack.wrapper.starter;
-
-import ir.mohaymen.StarPack.wrapper.facade.BDMP_FacadeLayer;
+package ir.mohaymen.starpack.wrapper.starter;
 
 public class Bootstrap {
-    public static BDMP_FacadeLayer createClient(){
-        return new BDMP_FacadeLayer();
+    public static ir.mohaymen.starpack.wrapper.facade.BDMPFacadeLayer createClient(){
+        return new ir.mohaymen.starpack.wrapper.facade.BDMPFacadeLayer();
     }
 }

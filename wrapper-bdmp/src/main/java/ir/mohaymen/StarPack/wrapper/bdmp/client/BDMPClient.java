@@ -1,12 +1,12 @@
-package ir.mohaymen.StarPack.wrapper.bdmp.client;
+package ir.mohaymen.starpack.wrapper.bdmp.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ir.mohaymen.StarPack.wrapper.am.client.AMClient;
-import ir.mohaymen.StarPack.wrapper.core.BDMP.getSimorghRows.GetSimorghRowsInputDTO;
-import ir.mohaymen.StarPack.wrapper.config.ConfigLoader;
-import ir.mohaymen.StarPack.wrapper.core.BDMP.getSimorghRows.GetSimorghRowsOutputDTO;
-import ir.mohaymen.StarPack.wrapper.core.BDMP.getWarehouses.GetWarhousesType;
+import ir.mohaymen.starpack.wrapper.am.client.AMClient;
+import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.GetSimorghRowsInputDTO;
+import ir.mohaymen.starpack.wrapper.config.ConfigLoader;
+import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.GetSimorghRowsOutputDTO;
+import ir.mohaymen.starpack.wrapper.core.bdmp.get_warehouses.GetWarhousesType;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -191,7 +191,7 @@ public class BDMPClient {
 //        System.out.println(bdmpClient.getStructuredRecordSourceRows(24, jsonFilter, null, null ).toString());
 //
 ////        ________________________________________
-////        System.out.println(bdmpClient.getSimorghWarehouses().toString());
+//        System.out.println(bdmpClient.getSimorghWarehouses().toString());
 ////        bdmpClient.getSimorghWarehouses();
 ////        bdmpClient.getSimorghWarehouses();
 //    }

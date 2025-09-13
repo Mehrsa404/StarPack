@@ -1,4 +1,4 @@
-package ir.mohaymen.StarPack.wrapper.config;
+package ir.mohaymen.starpack.wrapper.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
