@@ -53,8 +53,6 @@ public class AMClient {
                                         .map(HttpCookie::getValue)
                                         .findFirst()
                                         .orElse(null);
-        assert xAuthCookie != null;
-        assert cookiesession1 != null;
         CookiesDTO cookiesDTO = new CookiesDTO(xAuthCookie ,  cookiesession1);
         return cookiesDTO;
     }
@@ -90,10 +88,4 @@ public class AMClient {
         return extractTokens(List.of(req));
     }
 
-//    public static void main(String[] args) throws Exception {
-//        AMClient client = new AMClient();
-//        CookiesDTO cookiesDTO = client.getCookies();
-//        System.out.println(cookiesDTO.getSessionToken());
-//        System.out.println(cookiesDTO.getXAuthToken());
-//    }
 }

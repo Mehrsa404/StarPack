@@ -159,42 +159,6 @@ public class BDMPClient {
         return output;
     }
 
-//    public static void main(String[] args) throws Exception {
-//        BDMPClient bdmpClient = new BDMPClient();
-//
-////                String jsonFilter = """
-////                {
-////                  "LeafClause": {
-////                    "ColumnId": 155,
-////                    "QueryType": 13,
-////                    "Value": {
-////                      "ClauseValueType": 0,
-////                      "Value": "2/202"
-////                    }
-////                  },
-////                  "Not": false
-////                }""";
-//
-////        String jsonFilter = """
-////                {
-////                  "LeafClause": {
-////                    "ColumnId": 153,
-////                    "QueryType": 8,
-////                    "Value": {
-////                      "ClauseValueType": 0,
-////                      "Value": "1"
-////                    }
-////                  },
-////                  "Not": false
-////                }""";
-//        String jsonFilter = "";
-//        System.out.println(bdmpClient.getStructuredRecordSourceRows(24, jsonFilter, null, null ).toString());
-//
-////        ________________________________________
-//        System.out.println(bdmpClient.getSimorghWarehouses().toString());
-////        bdmpClient.getSimorghWarehouses();
-////        bdmpClient.getSimorghWarehouses();
-//    }
 }
 
 
