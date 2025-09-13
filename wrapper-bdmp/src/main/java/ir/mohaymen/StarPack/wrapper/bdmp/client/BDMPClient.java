@@ -53,13 +53,19 @@ public class BDMPClient {
                 .build();
     }
 
-    private JsonNode getSimorghRows(int warehouseId, String jsonFilter) throws Exception {
+    private JsonNode getSimorghRows(int warehouseId, String jsonFilter, Integer fromPage, Integer toPage) throws Exception {
+
+        int finalFromPage = (fromPage != null)
+                ?fromPage
+                :ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage",0);
+
+        int finalToPage = (toPage != null)
+                ?toPage
+                :ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage",20);
 
         GetSimorghRowsInputDTO dto = new GetSimorghRowsInputDTO(
-                warehouseId,
-                ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage",0),
-                ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage",20
-        ));
+                warehouseId, finalFromPage , finalToPage
+                );
         String query = String.join("&",
                                    qp("Mrpc-EngineName",  ConfigLoader.getString("bdmp.service.engineName", "LADW")),
                                    qp("Mrpc-EngineVersion", ConfigLoader.getString("bdmp.service.engineVersion", "403.1.1508.0")),
@@ -143,8 +149,8 @@ public class BDMPClient {
                + URLEncoder.encode(String.valueOf(value), StandardCharsets.UTF_8);
     }
 
-    public GetSimorghRowsOutputDTO getStructuredRecordSourceRows(int warehouseId, String jsonFilter) throws Exception {
-        var response = MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter).toString(), GetSimorghRowsOutputDTO.class);
+    public GetSimorghRowsOutputDTO getStructuredRecordSourceRows(int warehouseId, String jsonFilter, Integer fromPage, Integer toPage) throws Exception {
+        var response = MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter, fromPage, toPage).toString(), GetSimorghRowsOutputDTO.class);
         return response;
     }
 
@@ -182,11 +188,12 @@ public class BDMPClient {
 ////                  "Not": false
 ////                }""";
 //        String jsonFilter = "";
-//        System.out.println(bdmpClient.getStructuredRecordSourceRows(24, jsonFilter).toString());
+//        System.out.println(bdmpClient.getStructuredRecordSourceRows(24, jsonFilter, null, null ).toString());
 //
 ////        ________________________________________
-//        bdmpClient.getSimorghWarehouses();
-//        bdmpClient.getSimorghWarehouses();
+////        System.out.println(bdmpClient.getSimorghWarehouses().toString());
+////        bdmpClient.getSimorghWarehouses();
+////        bdmpClient.getSimorghWarehouses();
 //    }
 }
 

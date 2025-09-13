@@ -1,3 +1,5 @@
+package ir.mohaymen.StarPack.wrapper.starter;
+
 import ir.mohaymen.StarPack.wrapper.facade.BDMP_FacadeLayer;
 
 public class Bootstrap {

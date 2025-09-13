@@ -14,7 +14,7 @@
         <module>wrapper-am</module>
         <module>wrapper-bdmp</module>
         <module>wrapper-facade</module>
-        <module>wrapper-spring-boot-starter</module>
+        <module>wrapper-starter</module>
         <module>wrapper-config</module>
     </modules>
     <properties>
@@ -23,6 +23,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.17.2</jackson.version>
     </properties>
+
+<!--    <scm>-->
+<!--        <connection>scm:git:https://gitax.mohaymen.ir/development/tp/libraries/rule-engine</connection>-->
+<!--        <developerConnection>scm:git:https://gitax.mohaymen.ir/development/tp/libraries/rule-engine</developerConnection>-->
+<!--        <url>scm:git:https://gitax.mohaymen.ir/development/tp/libraries/rule-engine</url>-->
+<!--        <tag>HEAD</tag>-->
+<!--    </scm>-->
+
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>${env.MAVEN_REPO_ID}</id>-->
+<!--            <url>${env.MAVEN_RELEASE_PUBLISH_URL}</url>-->
+<!--            <layout>default</layout>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>${env.MAVEN_REPO_ID}</id>-->
+<!--            <url>${env.MAVEN_SNAPSHOT_PUBLISH_URL}</url>-->
+<!--            <layout>default</layout>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+
 
     <dependencyManagement>
         <dependencies>
@@ -58,7 +79,7 @@
             </dependency>
             <dependency>
                 <groupId>ir.mohaymen</groupId>
-                <artifactId>bootstrap</artifactId>
+                <artifactId>wrapper-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
