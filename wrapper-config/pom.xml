@@ -7,7 +7,7 @@
     <parent>
         <groupId>ir.mohaymen</groupId>
         <artifactId>starpack</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>wrapper-config</artifactId>

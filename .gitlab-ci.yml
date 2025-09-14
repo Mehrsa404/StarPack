@@ -7,10 +7,15 @@ cache:
 stages:
   - maven-test
   - maven-deploy
+  - release
 
 default:
   tags:
     - docker-runner
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: "0"
 
 maven-:
   stage: maven-test
@@ -67,3 +72,19 @@ maven-deploy:
       </settings>"  > ~/.m2/settings.xml
     - cat ~/.m2/settings.xml
     - mvn clean deploy -PthinJar
+
+semantic-release:
+  stage: release
+  image: node:20
+  needs: ["maven-deploy"]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH =~ /^release\/.+$/'
+  before_script:
+    - node -v && npm -v
+    - test -f package.json || npm init -y
+    - npm i -D semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/gitlab
+  script:
+    - npx semantic-release
+  tags:
+    - docker-runner
