@@ -24,6 +24,10 @@
             <groupId>ir.mohaymen</groupId>
             <artifactId>wrapper-config</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ir.mohaymen</groupId>
+            <artifactId>wrapper-bdmp</artifactId>
+        </dependency>
     </dependencies>
 
 

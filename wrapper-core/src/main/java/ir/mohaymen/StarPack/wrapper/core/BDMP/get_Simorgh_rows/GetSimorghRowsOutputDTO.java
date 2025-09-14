@@ -9,25 +9,19 @@ import java.util.List;
 public class GetSimorghRowsOutputDTO {
 
     @JsonProperty("DataList")
-    public List<RowItem> dataList;
+    private List<RowItem> dataList;
 
     @JsonProperty("FoundItemsCount")
-    public Long foundItemsCount;
+    private Long foundItemsCount;
 
     @JsonProperty("Took")
-    public Long took;
+    private Long took;
 
     @JsonProperty("Page")
-    public Object page;
+    private Object page;
 
     @JsonProperty("WarningMessage")
-    public String warningMessage;
-
-    @Override
-    public String toString() {
-        return "GetSimorghRowsOutputDTO{" + "dataList=" + dataList + ", foundItemsCount=" + foundItemsCount + ", took=" + took + ", page=" + page +
-               ", warningMessage='" + warningMessage + '\'' + '}';
-    }
+    private String warningMessage;
 
     public List<RowItem> getDataList() {
         return dataList;
@@ -72,10 +66,31 @@ public class GetSimorghRowsOutputDTO {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RowItem {
         @JsonProperty("WarehouseId")
-        public Integer warehouseId;
+        private Integer warehouseId;
 
         @JsonProperty("ImportId")
-        public Integer importId;
+        private Integer importId;
+
+        @JsonProperty("CreationDate")
+        private String creationDate;
+
+        @JsonProperty("MatchedQueryNames")
+        private List<String> matchedQueryNames;
+
+        @JsonProperty("DistributedId")
+        private Integer distributedId;
+
+        @JsonProperty("SId")
+        private String sId;
+
+        @JsonProperty("Cells")
+        private List<Cell> cells;
+
+        @JsonProperty("BinaryMetadata")
+        private List<BinaryMetadata> binaryMetadata;
+
+        @JsonProperty("Score")
+        private Number score;
 
         public Integer getWarehouseId() {
             return warehouseId;
@@ -121,7 +136,7 @@ public class GetSimorghRowsOutputDTO {
             return sId;
         }
 
-        public void setsId(String sId) {
+        public void setSId(String sId) {
             this.sId = sId;
         }
 
@@ -148,77 +163,15 @@ public class GetSimorghRowsOutputDTO {
         public void setScore(Number score) {
             this.score = score;
         }
-
-        @JsonProperty("CreationDate")
-        public String creationDate;
-
-        @JsonProperty("MatchedQueryNames")
-        public List<String> matchedQueryNames;
-
-        @JsonProperty("DistributedId")
-        public Integer distributedId;
-
-        @JsonProperty("SId")
-        public String sId;
-
-        @JsonProperty("Cells")
-        public List<Cell> cells;
-
-        @JsonProperty("BinaryMetadata")
-        public List<BinaryMetadata> binaryMetadata;
-
-        @JsonProperty("Score")
-        public Number score;
-
-        @Override
-        public String toString() {
-            return "RowItem{" + "warehouseId=" + warehouseId + ", importId=" + importId + ", creationDate='" + creationDate + '\'' +
-                   ", matchedQueryNames=" + matchedQueryNames + ", distributedId=" + distributedId + ", sId='" + sId + '\'' + ", cells=" + cells +
-                   ", binaryMetadata=" + binaryMetadata + ", score=" + score + '}';
-        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Cell {
-        @JsonProperty("$type")
-        public String type;
-
-
-        @JsonProperty("Name")
-        public String name;
-
-        @JsonProperty("Extension")
-        public String extension;
-
         @JsonProperty("ColumnId")
-        public Integer columnId;
+        private Integer columnId;
 
         @JsonProperty("Value")
-        public Object value;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getExtension() {
-            return extension;
-        }
-
-        public void setExtension(String extension) {
-            this.extension = extension;
-        }
+        private Object value;   // تغییر به Object به خاطر مقادیر مختلف (String, Double و..)
 
         public Integer getColumnId() {
             return columnId;
@@ -235,29 +188,49 @@ public class GetSimorghRowsOutputDTO {
         public void setValue(Object value) {
             this.value = value;
         }
-        @Override
-        public String toString() {
-            return "Cell{" + "type='" + type + '\'' + ", name='" + name + '\'' + ", extension='" + extension + '\'' + ", columnId=" + columnId +
-                   ", value=" + value + '}';
-        }
     }
+
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BinaryMetadata {
         @JsonProperty("ColumnId")
-        public Integer columnId;
+        private Integer columnId;
 
         @JsonProperty("FileId")
-        public String fileId;
+        private String fileId;
 
         @JsonProperty("Name")
-        public String name;
+        private String name;
 
         @JsonProperty("Size")
-        public Long size;
+        private Long size;
 
         @JsonProperty("Extension")
-        public String extension;
+        private String extension;
+
+        public Integer getColumnId() {
+            return columnId;
+        }
+
+        public void setColumnId(Integer columnId) {
+            this.columnId = columnId;
+        }
+
+        public String getFileId() {
+            return fileId;
+        }
+
+        public void setFileId(String fileId) {
+            this.fileId = fileId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public Long getSize() {
             return size;
@@ -273,36 +246,6 @@ public class GetSimorghRowsOutputDTO {
 
         public void setExtension(String extension) {
             this.extension = extension;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getFileId() {
-            return fileId;
-        }
-
-        public void setFileId(String fileId) {
-            this.fileId = fileId;
-        }
-
-        public Integer getColumnId() {
-            return columnId;
-        }
-
-        public void setColumnId(Integer columnId) {
-            this.columnId = columnId;
-        }
-
-        @Override
-        public String toString() {
-            return "BinaryMetadata{" + "columnId=" + columnId + ", fileId='" + fileId + '\'' + ", name='" + name + '\'' + ", extension='" +
-                   extension + '\'' + ", size=" + size + '}';
         }
     }
 }
