@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Mehrsa404/StarPack.git"
+    "url": "https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack.git"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/gitlab": "^13.2.8",
     "@semantic-release/release-notes-generator": "^14.1.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "semantic-release": "^24.2.8"
   }
 }

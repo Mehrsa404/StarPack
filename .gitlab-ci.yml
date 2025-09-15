@@ -88,3 +88,19 @@ semantic-release:
     - npx semantic-release
   tags:
     - docker-runner
+
+semantic-release-rc:
+  stage: release
+  image: node:20
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^release\/.+$/'
+  before_script:
+    - node -v && npm -v
+    - test -f package.json || npm init -y
+    - npm i -D semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/gitlab
+    - git config user.name "semantic-release-bot"
+    - git config user.email "semantic-release-bot@example.com"
+  script:
+    - npx semantic-release
+  tags:
+    - docker-runner
