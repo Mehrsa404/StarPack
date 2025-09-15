@@ -21,7 +21,7 @@ public class BlackBoxTest {
     }
 
     @Test
-    void testGetSimorghRows() throws Exception {
+    void testGetSimorghRowsMethod() throws Exception {
         BDMPClient bdmpClient = new BDMPClient();
 
         int clauseValueType = 0;
