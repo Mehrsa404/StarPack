@@ -18,7 +18,7 @@
         <module>wrapper-config</module>
     </modules>
     <properties>
-        <revision>1.0.0</revision>
+        <revision>1.0.1</revision>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -125,6 +125,19 @@
                         <execution>
                             <id>attach-javadocs</id>
                             <goals><goal>jar</goal></goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare</goal>
+                                <goal>deploy</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>
