@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BlackBoxTest {
     @Test
-    void testGetWarehousesMethod() throws Exception {
+    void testGetWarehouses() throws Exception {
         BDMPClient bdmpClient = new BDMPClient();
         GetWarhousesType warehousesType = bdmpClient.getWarehousesStructured();
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
