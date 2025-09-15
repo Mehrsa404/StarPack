@@ -92,6 +92,7 @@ semantic-release:
 semantic-release-rc:
   stage: release
   image: node:20
+  needs: ["maven-deploy"]
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^release\/.+$/'
   before_script:
