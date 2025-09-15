@@ -1,4 +1,4 @@
-image:  repo.mohaymen.ir:9802/maven:3.6.3-openjdk-17
+image:  $DOCKER_REGISTRY/maven:3.6.3-openjdk-17
 
 cache:
   paths:
