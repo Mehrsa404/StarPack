@@ -2,12 +2,26 @@
   "repositoryUrl": "https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack.git",
   "branches": [
     "master",
+    { "name": "1.0.x", "range": "1.0.x", "channel": "1.0.x" },
     { "name": "release/*", "prerelease": "rc" }
   ],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
       "preset": "conventionalcommits",
-      "releaseRules": [{ "type": "*", "release": "patch" }]
+      "releaseRules": [
+        { "type": "feat", "release": "patch" },
+        { "type":  "fix", "release": "patch" },
+        { "breaking": true, "release": false },
+        { "type": "perf",     "release": false },
+        { "type": "refactor", "release": false },
+        { "type": "docs",     "release": false },
+        { "type": "style",    "release": false },
+        { "type": "test",     "release": false },
+        { "type": "build",    "release": false },
+        { "type": "ci",       "release": false },
+        { "type": "chore",    "release": false },
+        { "type": "revert",   "release": false }
+      ]
     }],
     "@semantic-release/release-notes-generator",
     ["@semantic-release/changelog", { "changelogFile": "CHANGELOG.md" }],
