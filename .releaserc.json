@@ -1,4 +1,5 @@
 {
+  "repositoryUrl": "https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack.git",
   "branches": [
     "master",
     { "name": "release/*", "prerelease": "rc" }
