@@ -1,3 +1,10 @@
+## [1.0.2](https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack/compare/v1.0.1...v1.0.2) (2025-09-15)
+
+
+### Bug Fixes
+
+* test versioning ([d361ff0](https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack/commit/d361ff0ea04bfce6e1c51d8b681d4beb0123be9f))
+
 ## [1.0.1](https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack/compare/v1.0.0...v1.0.1) (2025-09-15)
 
 
