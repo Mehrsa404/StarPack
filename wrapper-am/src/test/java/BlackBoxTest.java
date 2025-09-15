@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class BlackBoxTest {
     @Test
-    void testAuthMethods() throws Exception {
+    void testAuthMethod() throws Exception {
         AMClient client = new AMClient();
         CookiesDTO cookies = client.getCookies();
         System.out.println(cookies.getXAuthToken());
