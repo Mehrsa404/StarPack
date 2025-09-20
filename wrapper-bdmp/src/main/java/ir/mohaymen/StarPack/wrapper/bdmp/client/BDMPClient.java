@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,11 @@ public class BDMPClient {
         this.httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER).build();
     }
 
-    private JsonNode getSimorghRows(int warehouseId, String jsonFilter, Integer fromPage, Integer toPage) throws Exception {
+    private JsonNode getSimorghRows(int warehouseId,
+                                    String jsonFilter,
+                                    Integer fromPage,
+                                    Integer toPage,
+                                    List<Integer> visibleColumnIds) throws Exception {
 
         int finalFromPage = (fromPage != null) ? fromPage : ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage", 0);
 
@@ -67,9 +72,16 @@ public class BDMPClient {
         URI uri = new URI(baseUrl + "/gateway/MSSE.LADW/api/SimorghExplorerApi/GetSimorghRows?" + query);
 
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode filterNode = mapper.readTree(jsonFilter);
+        JsonNode filterNode;
+        if (jsonFilter != null) {
+            filterNode = mapper.readTree(jsonFilter);
+        } else {
+            filterNode = null;
+        }
 
-        Map<String, Object> requestDto = Map.of("WarehouseId", dto.getWarehouseId());
+        Map<String, Object> requestDto = new HashMap<>();
+        requestDto.put("WarehouseId", dto.getWarehouseId());
+        requestDto.put("ColumnIds", visibleColumnIds); // مقدار null مجاز است در HashMap
 
         var paging = new java.util.LinkedHashMap<String, Object>();
         paging.put("PagingType", "FROM_SIZE");
@@ -123,7 +135,10 @@ public class BDMPClient {
                                          .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        return MAPPER.readTree(response.body());
+        if (response.body() != null && !response.body().equals("[]")) {
+            return MAPPER.readTree(response.body());
+        }
+        return null;
     }
 
 
@@ -134,8 +149,10 @@ public class BDMPClient {
     public GetSimorghRowsOutputDTO getStructuredRecordSourceRows(int warehouseId,
                                                                  String jsonFilter,
                                                                  Integer fromPage,
-                                                                 Integer toPage) throws Exception {
-        var response = MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter, fromPage, toPage).toString(), GetSimorghRowsOutputDTO.class);
+                                                                 Integer toPage,
+                                                                 List<Integer> columnIds) throws Exception {
+        var response =
+                MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter, fromPage, toPage, columnIds).toString(), GetSimorghRowsOutputDTO.class);
         return response;
     }
 
