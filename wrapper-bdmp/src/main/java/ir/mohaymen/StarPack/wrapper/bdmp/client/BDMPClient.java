@@ -151,7 +151,6 @@ public class BDMPClient {
                                                                  Integer fromPage,
                                                                  Integer toPage,
                                                                  List<Integer> columnIds) throws Exception {
-        System.out.println(getSimorghRows(warehouseId, jsonFilter, fromPage, toPage, columnIds).toString());
         var response =
                 MAPPER.readValue(getSimorghRows(warehouseId, jsonFilter, fromPage, toPage, columnIds).toString(), GetSimorghRowsOutputDTO.class);
         return response;
