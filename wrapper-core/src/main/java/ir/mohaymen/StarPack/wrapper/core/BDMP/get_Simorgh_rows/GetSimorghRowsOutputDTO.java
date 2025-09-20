@@ -1,10 +1,13 @@
 package ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GetSimorghRowsOutputDTO {
 
@@ -63,6 +66,7 @@ public class GetSimorghRowsOutputDTO {
         this.warningMessage = warningMessage;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RowItem {
         @JsonProperty("WarehouseId")
@@ -74,12 +78,15 @@ public class GetSimorghRowsOutputDTO {
         @JsonProperty("CreationDate")
         private String creationDate;
 
+        @JsonIgnore
         @JsonProperty("MatchedQueryNames")
         private List<String> matchedQueryNames;
 
+        @JsonIgnore
         @JsonProperty("DistributedId")
         private Integer distributedId;
 
+        @JsonIgnore
         @JsonProperty("SId")
         private String sId;
 
@@ -165,10 +172,14 @@ public class GetSimorghRowsOutputDTO {
         }
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Cell {
         @JsonProperty("ColumnId")
         private Integer columnId;
+
+        @JsonProperty("ColumnName")
+        private String columnName;
 
         @JsonProperty("Value")
         private Object value;   // تغییر به Object به خاطر مقادیر مختلف (String, Double و..)
@@ -188,9 +199,17 @@ public class GetSimorghRowsOutputDTO {
         public void setValue(Object value) {
             this.value = value;
         }
+
+        public String getColumnName() {
+            return columnName;
+        }
+
+        public void setColumnName(String columnName) {
+            this.columnName = columnName;
+        }
     }
 
-
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BinaryMetadata {
         @JsonProperty("ColumnId")
