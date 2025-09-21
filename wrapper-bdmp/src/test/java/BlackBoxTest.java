@@ -40,8 +40,6 @@ public class BlackBoxTest {
 //        ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 //
 //        String json = om.writeValueAsString(filter);
-//        System.out.println(json);
-//        GetSimorghRowsOutputDTO output = bdmpClient.getStructuredRecordSourceRows(47, json, 0, 10, List.of(292, 296, 294, 298));
         GetSimorghRowsOutputDTO output = bdmpClient.getStructuredRecordSourceRows(74 , null , null , null, List.of(445, 446));
         ObjectMapper MAPPER = new ObjectMapper();
         System.out.println(MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(output.getDataList()));
