@@ -3,6 +3,7 @@ package ir.mohaymen.starpack.wrapper.bdmp.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.mohaymen.starpack.wrapper.am.client.AMClient;
+import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.*;
 import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.GetSimorghRowsInputDTO;
 import ir.mohaymen.starpack.wrapper.config.ConfigLoader;
 import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.GetSimorghRowsOutputDTO;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 public class BDMPClient {
     private final static AMClient AM_CLIENT = new AMClient();
-    private final static String X_AuthToken;
+    private static String X_AuthToken;
 
     static {
         try {
@@ -56,7 +57,6 @@ public class BDMPClient {
                                     Integer fromPage,
                                     Integer toPage,
                                     List<Integer> visibleColumnIds) throws Exception {
-
         int finalFromPage = (fromPage != null) ? fromPage : ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage", 0);
 
         int finalToPage = (toPage != null) ? toPage : ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage", 20);
@@ -109,8 +109,10 @@ public class BDMPClient {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() / 100 != 2) {
+            X_AuthToken = AM_CLIENT.getCookies().getXAuthToken();
             throw new RuntimeException("Getting simorgh rows failed, status=" + response.statusCode() + ", body=" + response.body());
         }
+        System.out.println(response.body());
         return MAPPER.readTree(response.body());
     }
 
@@ -135,7 +137,12 @@ public class BDMPClient {
                                          .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() / 100 != 2) {
+            X_AuthToken = AM_CLIENT.getCookies().getXAuthToken();
+            throw new RuntimeException("Getting simorgh rows failed, status=" + response.statusCode() + ", body=" + response.body());
+        }
         if (response.body() != null && !response.body().equals("[]")) {
+            System.out.println(MAPPER.readTree(response.body()));
             return MAPPER.readTree(response.body());
         }
         return null;
@@ -161,6 +168,15 @@ public class BDMPClient {
         return output;
     }
 
+//    private GetSimorghRowTypefaceRestoration restorationType(GetSimorghRowsOutputDTO dto) throws Exception {
+//        GetSimorghRowTypefaceRestoration output = new GetSimorghRowTypefaceRestoration();
+//        for(GetSimorghRowsOutputDTO.RowItem a: dto.getDataList()){
+//            Data item = new Data();
+//            for(GetSimorghRowsOutputDTO.Cell i: a.getCells()){
+//                Cell cell = new Cell(i.get);
+//            }
+//        }
+//    }
 }
 
 
