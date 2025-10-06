@@ -6,7 +6,6 @@ import ir.mohaymen.starpack.wrapper.core.bdmp.get_Simorgh_rows.GetSimorghRowsOut
 import ir.mohaymen.starpack.wrapper.core.bdmp.get_warehouses.GetWarhousesType;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
