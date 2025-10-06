@@ -57,6 +57,7 @@ public class BDMPClient {
                                     Integer fromPage,
                                     Integer toPage,
                                     List<Integer> visibleColumnIds) throws Exception {
+        X_AuthToken = AM_CLIENT.getCookies().getXAuthToken();
         int finalFromPage = (fromPage != null) ? fromPage : ConfigLoader.getInt("bdmp.service.showSimorghRowsFromPage", 0);
 
         int finalToPage = (toPage != null) ? toPage : ConfigLoader.getInt("bdmp.service.showSimorghRowsToPage", 20);
@@ -167,16 +168,6 @@ public class BDMPClient {
         GetWarhousesType output = MAPPER.readValue(getSimorghWarehouses().toString(), GetWarhousesType.class);
         return output;
     }
-
-//    private GetSimorghRowTypefaceRestoration restorationType(GetSimorghRowsOutputDTO dto) throws Exception {
-//        GetSimorghRowTypefaceRestoration output = new GetSimorghRowTypefaceRestoration();
-//        for(GetSimorghRowsOutputDTO.RowItem a: dto.getDataList()){
-//            Data item = new Data();
-//            for(GetSimorghRowsOutputDTO.Cell i: a.getCells()){
-//                Cell cell = new Cell(i.get);
-//            }
-//        }
-//    }
 }
 
 
