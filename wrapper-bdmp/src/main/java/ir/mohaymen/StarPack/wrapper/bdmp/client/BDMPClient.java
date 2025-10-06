@@ -113,7 +113,6 @@ public class BDMPClient {
             X_AuthToken = AM_CLIENT.getCookies().getXAuthToken();
             throw new RuntimeException("Getting simorgh rows failed, status=" + response.statusCode() + ", body=" + response.body());
         }
-        System.out.println(response.body());
         return MAPPER.readTree(response.body());
     }
 
@@ -143,7 +142,6 @@ public class BDMPClient {
             throw new RuntimeException("Getting simorgh rows failed, status=" + response.statusCode() + ", body=" + response.body());
         }
         if (response.body() != null && !response.body().equals("[]")) {
-            System.out.println(MAPPER.readTree(response.body()));
             return MAPPER.readTree(response.body());
         }
         return null;
