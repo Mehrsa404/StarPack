@@ -5,12 +5,12 @@
     <parent>
         <groupId>ir.mohaymen</groupId>
         <artifactId>starpack</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
     </parent>
 
     <groupId>ir.mohaymen</groupId>
     <artifactId>wrapper-starter</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
