@@ -38,9 +38,9 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:http://gitlab.nta.local/tpis/microservice/libraries/tax-payer-logger</connection>
-        <developerConnection>scm:git:http://gitlab.nta.local/tpis/microservice/libraries/tax-payer-logger</developerConnection>
-        <url>scm:git:http://gitlab.nta.local/tpis/microservice/libraries/tax-payer-logger</url>
+        <connection>scm:git:https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack</connection>
+        <developerConnection>scm:git:https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack</developerConnection>
+        <url>scm:git:https://gitax.mohaymen.ir/development/intelligent-assistant/libraries/star-pack</url>
         <tag>HEAD</tag>
     </scm>
 
