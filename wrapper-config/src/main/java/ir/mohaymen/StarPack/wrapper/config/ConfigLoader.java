@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class ConfigLoader {
 
-    private static final Properties props = new Properties();
+    private static final Properties props= new Properties();
 
     static {
         try (InputStream in = ConfigLoader.class.getClassLoader().getResourceAsStream("application.yml")) {
