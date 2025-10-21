@@ -13,7 +13,10 @@ public class ConfigLoader {
     private static final Properties props= new Properties();
 
     static {
-        try (InputStream in = ConfigLoader.class.getClassLoader().getResourceAsStream("application.yml")) {
+        try (InputStream in = Thread.currentThread()
+                                    .getContextClassLoader()
+                                    .getResourceAsStream("application.yml");
+        ) {
             if (in == null) {
                 throw new RuntimeException("application.yml not found in classpath");
             }
