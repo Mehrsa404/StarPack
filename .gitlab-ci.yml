@@ -11,8 +11,6 @@ stages:
 
 maven-test:
   stage: maven-test
-  rules:
-    - if: $CI_COMMIT_TAG
   script:
     - echo $MAVEN_USERNAME
     - echo "<settings>
@@ -37,8 +35,6 @@ maven-test:
 
 maven-deploy:
   stage: maven-deploy
-  rules:
-    - if: $CI_COMMIT_TAG
   allow_failure: true
   script:
     - echo $MAVEN_USERNAME
