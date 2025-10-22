@@ -1,6 +1,5 @@
 package ir.mohaymen.starpack.wrapper.config;
 
-import java.util.*;
 
 public class ConfigLoader {
 
