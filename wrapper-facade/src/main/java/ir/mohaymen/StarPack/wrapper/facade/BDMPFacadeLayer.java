@@ -7,7 +7,11 @@ import ir.mohaymen.starpack.wrapper.core.bdmp.get_warehouses.GetWarhousesType;
 import java.util.List;
 
 public class BDMPFacadeLayer {
-    private static BDMPClient bdmpClient = new BDMPClient();
+    private final BDMPClient bdmpClient;
+
+    public BDMPFacadeLayer(BDMPClient bdmpClient) {
+        this.bdmpClient = bdmpClient;
+    }
 
     public GetSimorghRowsOutputDTO getSimorghRows(int warehouseId,
                                                   String jsonFilter,

@@ -19,6 +19,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>ir.mohaymen</groupId>
+            <artifactId>wrapper-config</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.2</version>

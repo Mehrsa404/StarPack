@@ -1,7 +1,15 @@
 package ir.mohaymen.starpack.wrapper.starter;
 
+import ir.mohaymen.starpack.wrapper.bdmp.client.BDMPClient;
+import ir.mohaymen.starpack.wrapper.facade.BDMPFacadeLayer;
+
 public class Bootstrap {
-    public static ir.mohaymen.starpack.wrapper.facade.BDMPFacadeLayer createClient(){
-        return new ir.mohaymen.starpack.wrapper.facade.BDMPFacadeLayer();
+    private final BDMPClient bdmpClient;
+
+    public Bootstrap(BDMPClient bdmpClient) {
+        this.bdmpClient = bdmpClient;
+    }
+    public BDMPFacadeLayer createClient(){
+        return new BDMPFacadeLayer(this.bdmpClient);
     }
 }
