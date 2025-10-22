@@ -1,4 +1,4 @@
-image:  $DOCKER_REGISTRY/maven:3.6.3-openjdk-17
+image: $DOCKER_REGISTRY/maven:3.6.3-openjdk-17
 
 cache:
   paths:
@@ -7,23 +7,9 @@ cache:
 stages:
   - maven-test
   - maven-deploy
-  - release
 
-default:
-  tags:
-    - docker-runner
-
-variables:
-  GIT_STRATEGY: fetch
-  GIT_DEPTH: "0"
-
-maven-:
+maven-test:
   stage: maven-test
-  allow_failure: true
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-      allow_failure: true
   script:
     - echo $MAVEN_USERNAME
     - echo "<settings>
@@ -49,8 +35,6 @@ maven-:
 maven-deploy:
   stage: maven-deploy
   allow_failure: true
-  only:
-    - master
   script:
     - echo $MAVEN_USERNAME
     - echo "<settings>
@@ -72,35 +56,3 @@ maven-deploy:
       </settings>"  > ~/.m2/settings.xml
     - cat ~/.m2/settings.xml
     - mvn clean deploy -PthinJar
-
-semantic-release:
-  stage: release
-  image: node:20
-  needs: ["maven-deploy"]
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_COMMIT_BRANCH =~ /^release\/.+$/'
-  before_script:
-    - node -v && npm -v
-    - test -f package.json || npm init -y
-    - npm i -D semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/gitlab
-  script:
-    - npx semantic-release
-  tags:
-    - docker-runner
-
-semantic-release-rc:
-  stage: release
-  image: node:20
-  rules:
-    - if: '$CI_COMMIT_BRANCH =~ /^release\/.+$/'
-  before_script:
-    - node -v && npm -v
-    - test -f package.json || npm init -y
-    - npm i -D semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/gitlab
-    - git config user.name "semantic-release-bot"
-    - git config user.email "semantic-release-bot@example.com"
-  script:
-    - npx semantic-release
-  tags:
-    - docker-runner
